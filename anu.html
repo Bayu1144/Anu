@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy D+365</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS STYLING --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .background {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("asset/bg.jpg"); 
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: brightness(0.6);
+        }
+
+        .card {
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .sticker {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+
+        .btn-geser {
+            margin-top: 30px;
+            background: #2c2c2c;
+            color: white;
+            border: 2px solid #ffffff;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex; /* Flex agar icon rapi */
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-geser:hover {
+            background: white;
+            color: #333;
+            transform: scale(1.05);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <audio id="musik" loop>
+        <source src="asset/owi.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="card" id="cardContainer">
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybmFhcDIxcnRkbDkwZ2M0cXl5MjhvbmFvMzM3eWxwbmRmMHZoZGRidCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BvS0UKwFvN1TwzsXDF/giphy.gif" alt="Sticker" class="sticker" id="stickerImg">
+        <h3 id="mainText" class="message">Jadi gini jal..</h3>
+    </div>
+
+    <button class="btn-geser" id="tombolGeser" onclick="geserKonten()">
+        <span id="btnText">Geser</span> 👉
+    </button>
+
+    <div class="footer">Ryu~</div>
+
+    <script>
+        const konten = [
+            {
+                text: "Begini...",
+                img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdtZ2JiZDR0a3UzM3ZqYzF0bHlyeXU0cTZ1ZDM5azBubXM1YzVxdSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/iCVzZwwE6QhZPqXbXn/giphy.gif"
+            },
+            {
+                text: "Hapibedey mbak! 🎂",
+                img: "https://media.giphy.com/media/U8iiB9GBdt5t9n1I6J/giphy.gif"
+            },
+            {
+                text: "Semoga panjang umur & sehat selalu ✨",
+                img: "asset/img1.jpg"
+            },
+            {
+                text: "doa nirek ee.. lh bekumis ne ♪⁠～⁠(⁠´⁠ε⁠｀⁠ ⁠)",
+                img: "asset/img2.jpg"
+            },
+            {
+                text: "Dah segitu aja.. w mau lanjud hibernasi, jangan lupa eskrim 5 porsi (⁠◠⁠‿⁠・⁠)⁠—⁠☆",
+                img: "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMjdrejVrdnY0aGc4NWlrZHd2NWVwZWh2eHEyaDdta3AwY3U0eXJudSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6i48JlbyM9UokosELP/giphy.gif"
+            }
+        ];
+
+        let index = 0;
+        const mainText = document.getElementById('mainText');
+        const stickerImg = document.getElementById('stickerImg');
+        const cardContainer = document.getElementById('cardContainer');
+        const tombolGeser = document.getElementById('tombolGeser'); // Ambil elemen tombol
+        const musik = document.getElementById('musik');
+        let isPlaying = false;
+
+        function geserKonten() {
+            // Play musik saat klik pertama
+            if (!isPlaying) {
+                musik.play().catch(error => console.log("Gagal memutar musik: ", error));
+                isPlaying = true;
+            }
+
+            
+            if (index < konten.length - 1) {
+                index++;
+
+                // Animasi Fade Out
+                cardContainer.style.opacity = 0;
+                cardContainer.style.transform = "translateY(-10px)";
+
+                setTimeout(() => {
+                    // Update Konten
+                    mainText.innerText = konten[index].text;
+                    stickerImg.src = konten[index].img;
+
+                    // Animasi Fade In
+                    cardContainer.style.opacity = 1;
+                    cardContainer.style.transform = "translateY(0)";
+
+                    
+                    if (index === konten.length - 1) {
+                        tombolGeser.style.display = "none"; // Hilangkan tombol
+                    }
+
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
